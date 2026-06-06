@@ -740,6 +740,63 @@ export default function Pyeongdani() {
           {/* AD: 하단 배너 */}
           <AdBanner dark={dark} style={{ marginTop: 24 }} />
 
+          {/* 콘텐츠 / SEO 섹션 */}
+          <div style={{ marginTop: 32, lineHeight: 1.8 }}>
+            <h2 style={{ fontSize: 18, fontWeight: 700, color: C.g, marginBottom: 12 }}>물타기·불타기 계산기란?</h2>
+            <p style={{ fontSize: 14, color: C.t2, marginBottom: 16 }}>
+              평단이는 주식 투자자가 물타기와 불타기를 할 때 변하는 평균 매수 단가(평단가)와, 목표 주가 도달 시 예상되는 세전·세후 수익을 한 번에 계산해 주는 무료 도구입니다.
+              복잡한 수식 없이 보유 단가와 수량, 추가 매수 정보만 입력하면 새로운 평단가와 수익률이 즉시 계산됩니다. 국내주식과 미국주식의 세금 차이까지 반영해 실제 손에 쥐는 금액을 보여줍니다.
+            </p>
+
+            <h2 style={{ fontSize: 18, fontWeight: 700, color: C.g, marginBottom: 12 }}>물타기와 불타기의 차이</h2>
+            <p style={{ fontSize: 14, color: C.t2, marginBottom: 16 }}>
+              물타기는 보유 종목의 주가가 평단가보다 내려갔을 때 추가로 매수해 평균 매수 단가를 낮추는 전략입니다.
+              평단가가 낮아지면 주가가 조금만 반등해도 손익분기점에 빨리 도달할 수 있습니다.
+              반대로 불타기는 주가가 평단가보다 올라갔을 때 추가 매수하는 것으로, 상승 추세에 올라타되 평균 단가는 높아집니다.
+              두 전략 모두 평단이의 추가 매수 입력란에 가격과 수량을 넣으면 결과를 바로 확인할 수 있습니다.
+            </p>
+
+            <h2 style={{ fontSize: 18, fontWeight: 700, color: C.g, marginBottom: 12 }}>평단가 계산 방법</h2>
+            <p style={{ fontSize: 14, color: C.t2, marginBottom: 16 }}>
+              평균 매수 단가는 '총 매수 금액 ÷ 총 보유 수량'으로 계산합니다.
+              예를 들어 5만 원에 100주를 사고, 이후 4만 원에 100주를 추가 매수하면 총 매수 금액은 900만 원, 총 수량은 200주이므로 평단가는 4만 5천 원이 됩니다.
+              평단이는 여러 번의 추가 매수도 누적해서 자동으로 계산해 줍니다.
+            </p>
+
+            <h2 style={{ fontSize: 18, fontWeight: 700, color: C.g, marginBottom: 12 }}>국내주식과 미국주식 세금 차이</h2>
+            <p style={{ fontSize: 14, color: C.t2, marginBottom: 16 }}>
+              국내주식은 매도 시 증권거래세 0.18%가 부과됩니다(2025년 기준). 별도의 양도소득세는 대주주가 아닌 일반 투자자에게는 적용되지 않습니다.
+              미국주식은 양도소득세가 22%이며, 연간 250만 원까지는 기본 공제됩니다. 즉 한 해 동안의 매매 차익에서 250만 원을 뺀 금액에 대해 22%가 과세됩니다.
+              평단이는 시장을 선택하면 이 차이를 자동으로 반영해 세후 실수익을 계산합니다.
+            </p>
+
+            <h2 style={{ fontSize: 18, fontWeight: 700, color: C.g, marginBottom: 12 }}>평단이 사용법</h2>
+            <p style={{ fontSize: 14, color: C.t2, marginBottom: 16 }}>
+              먼저 국내주식 또는 미국주식을 선택합니다. 현재 보유한 평균 매수 단가와 수량을 입력하고, 물타기나 불타기로 추가 매수한 내역을 넣습니다.
+              팔고 싶은 목표 주가를 입력한 뒤 계산하기를 누르면 새 평단가, 수익률, 세전·세후 수익, 그리고 그 수익이 치킨 몇 마리에 해당하는지까지 보여 줍니다.
+              꿈 계산기 탭에서는 내 주식 수익으로 살 수 있는 물건들을 게임처럼 확인할 수 있습니다.
+            </p>
+
+            <h2 style={{ fontSize: 18, fontWeight: 700, color: C.g, marginBottom: 12 }}>자주 묻는 질문</h2>
+            <div style={{ fontSize: 14, color: C.t2, marginBottom: 8 }}>
+              <p style={{ fontWeight: 600, color: C.t1, marginBottom: 4 }}>Q. 평단이는 무료인가요?</p>
+              <p style={{ marginBottom: 14 }}>네, 평단이의 모든 계산 기능은 무료로 제공됩니다.</p>
+
+              <p style={{ fontWeight: 600, color: C.t1, marginBottom: 4 }}>Q. 입력한 정보가 저장되나요?</p>
+              <p style={{ marginBottom: 14 }}>모든 계산은 사용자의 브라우저에서만 처리되며, 서버에 저장되거나 전송되지 않습니다.</p>
+
+              <p style={{ fontWeight: 600, color: C.t1, marginBottom: 4 }}>Q. 세금 계산 결과는 정확한가요?</p>
+              <p style={{ marginBottom: 14 }}>일반적인 세율을 기준으로 한 추정치이며, 실제 세금은 개인의 상황에 따라 다를 수 있습니다. 참고용으로만 활용하시기 바랍니다.</p>
+
+              <p style={{ fontWeight: 600, color: C.t1, marginBottom: 4 }}>Q. 미국주식 환율은 어떻게 적용되나요?</p>
+              <p style={{ marginBottom: 0 }}>당일 USD/KRW 환율을 자동으로 가져와 원화와 달러를 함께 표시합니다.</p>
+            </div>
+
+            <p style={{ fontSize: 12, color: C.t3, marginTop: 16, fontStyle: "italic" }}>
+              ※ 평단이가 제공하는 정보는 투자 권유나 세무 자문이 아니며, 투자 판단의 책임은 본인에게 있습니다.
+            </p>
+          </div>
+
           {/* Footer */}
           <div style={{ textAlign: "center", marginTop: 16, fontSize: 11, color: C.t3, lineHeight: 1.8 }}>
             <div style={{ fontWeight: 600 }}>평단이 🕯️</div>
