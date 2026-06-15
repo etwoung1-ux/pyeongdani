@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>평단가 계산법 — 평균 매수 단가 구하는 공식과 예시 | 평단이</title>
+  <meta name="description" content="평균 매수 단가(평단가)를 구하는 공식과 단계별 계산 방법, 물타기·불타기 시 평단가 변화, 수익률과 손익분기점 계산까지 예시로 쉽게 설명합니다." />
+  <meta name="keywords" content="평단가 계산, 평균 매수 단가, 평단가 구하는 법, 평단가 공식, 손익분기점 계산, 주식 수익률 계산" />
+  <link rel="canonical" href="https://pyeongdani.com/guide-average.html" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { max-width: 680px; margin: 0 auto; padding: 40px 20px 80px; font-family: -apple-system, "Noto Sans KR", sans-serif; line-height: 1.9; color: #2a2a2a; background: #FAFDF7; }
+    h1 { color: #0B8A4B; font-size: 26px; margin-bottom: 8px; line-height: 1.3; }
+    .lead { color: #888; font-size: 15px; margin-bottom: 32px; }
+    h2 { color: #0B8A4B; font-size: 19px; margin-top: 36px; margin-bottom: 12px; }
+    p { font-size: 15px; margin-bottom: 16px; }
+    ul { margin: 0 0 16px 20px; }
+    li { font-size: 15px; margin-bottom: 8px; }
+    .box { background: #E8F8EE; border-radius: 12px; padding: 18px; margin: 20px 0; font-size: 15px; }
+    .box strong { color: #0B8A4B; }
+    .formula { background: #fff; border: 1px solid #d5e5d0; border-radius: 12px; padding: 18px; margin: 20px 0; text-align: center; font-size: 16px; font-weight: 600; color: #0B8A4B; }
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+    th, td { border: 1px solid #d5e5d0; padding: 10px; text-align: center; }
+    th { background: #E8F8EE; color: #0B8A4B; }
+    a { color: #0B8A4B; }
+    .cta { display: inline-block; margin-top: 32px; padding: 14px 28px; background: #0B8A4B; color: #fff; border-radius: 12px; font-size: 15px; font-weight: 600; text-decoration: none; }
+    .footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid #e0e8d8; font-size: 12px; color: #aaa; }
+    .nav { margin-bottom: 24px; font-size: 13px; }
+    .nav a { color: #888; text-decoration: none; margin-right: 12px; }
+  </style>
+</head>
+<body>
+
+  <div class="nav">
+    <a href="/">← 평단이 홈</a>
+    <a href="/guide-multaegi.html">물타기 가이드</a>
+    <a href="/guide-tax.html">세금 가이드</a>
+  </div>
+
+  <h1>평단가 계산법</h1>
+  <p class="lead">평균 매수 단가 구하는 공식부터 수익률·손익분기점 계산까지</p>
+
+  <p>평단가는 '평균 매수 단가'의 줄임말로, 한 종목을 여러 번에 걸쳐 매수했을 때 한 주당 평균적으로 얼마에 샀는지를 나타내는 가격입니다. 평단가를 정확히 알아야 현재 손익 상태와 목표 수익을 계산할 수 있습니다.</p>
+
+  <h2>평단가 기본 공식</h2>
+  <div class="formula">
+    평단가 = 총 매수 금액 ÷ 총 보유 수량
+  </div>
+  <p>여기서 총 매수 금액은 각 매수 건의 '가격 × 수량'을 모두 더한 값이고, 총 보유 수량은 모든 매수 수량의 합입니다.</p>
+
+  <h2>단계별 계산 예시</h2>
+  <p>세 번에 나누어 매수한 경우를 예로 들어 보겠습니다.</p>
+  <table>
+    <tr><th>매수 차수</th><th>가격</th><th>수량</th><th>금액</th></tr>
+    <tr><td>1차</td><td>50,000원</td><td>10주</td><td>500,000원</td></tr>
+    <tr><td>2차</td><td>45,000원</td><td>20주</td><td>900,000원</td></tr>
+    <tr><td>3차</td><td>40,000원</td><td>20주</td><td>800,000원</td></tr>
+    <tr><td><strong>합계</strong></td><td>—</td><td><strong>50주</strong></td><td><strong>2,200,000원</strong></td></tr>
+  </table>
+  <div class="box">
+    평단가 = 2,200,000원 ÷ 50주 = <strong>44,000원</strong>
+  </div>
+
+  <h2>손익분기점(BEP) 이해하기</h2>
+  <p>손익분기점은 손해도 이익도 아닌, 본전이 되는 주가입니다. 거래 수수료와 세금을 무시하면 손익분기점은 평단가와 같습니다. 즉 위 예시에서 주가가 44,000원이 되면 본전입니다.</p>
+  <p>실제로는 매도 시 증권거래세(국내 0.18%) 등이 붙기 때문에, 정확한 손익분기점은 평단가보다 아주 약간 높습니다.</p>
+
+  <h2>수익률 계산</h2>
+  <div class="formula">
+    수익률(%) = (현재가 − 평단가) ÷ 평단가 × 100
+  </div>
+  <p>위 예시(평단가 44,000원)에서 주가가 55,000원이 되면 수익률은 (55,000 − 44,000) ÷ 44,000 × 100 = 약 25%입니다.</p>
+
+  <h2>물타기·불타기가 평단가에 미치는 영향</h2>
+  <ul>
+    <li><strong>물타기(평단가보다 싼 가격 매수):</strong> 평단가가 내려갑니다.</li>
+    <li><strong>불타기(평단가보다 비싼 가격 매수):</strong> 평단가가 올라갑니다.</li>
+  </ul>
+  <p>추가 매수 가격이 기존 평단가와 얼마나 차이 나는지, 그리고 수량이 얼마인지에 따라 평단가 변동 폭이 결정됩니다. 같은 가격이라도 더 많은 수량을 매수할수록 평단가는 그 가격에 더 가까워집니다.</p>
+
+  <h2>복잡한 계산은 평단이에게 맡기세요</h2>
+  <p>여러 번의 매수와 세금까지 손으로 계산하는 것은 번거롭고 실수가 생기기 쉽습니다. 평단이에 매수 내역만 입력하면 평단가, 수익률, 손익분기점, 세후 실수익을 한 번에 정확히 계산해 줍니다.</p>
+
+  <a class="cta" href="/">평단이로 평단가 계산하기 →</a>
+
+  <div class="footer">
+    ※ 본 내용은 정보 제공을 위한 것이며 투자 권유가 아닙니다. 투자 판단과 책임은 본인에게 있습니다.<br>
+    © 2025 평단이. All rights reserved.
+  </div>
+
+</body>
+</html>

@@ -481,11 +481,8 @@ export default function Pyeongdani() {
   );
 
   return (
-    <div style={{ background: C.bg, minHeight: "100vh", fontFamily: '-apple-system,"Noto Sans KR",sans-serif', color: C.t1, transition: "background .3s", paddingBottom: 70 }}>
+    <div style={{ background: C.bg, minHeight: "100vh", fontFamily: '-apple-system,"Noto Sans KR",sans-serif', color: C.t1, transition: "background .3s" }}>
       <div style={{ display: "flex", justifyContent: "center", gap: 20, maxWidth: 900, margin: "0 auto", padding: "0 8px" }}>
-
-        {/* Left Sidebar Ad (PC) */}
-        <div className="sidebar-ad" style={{ display: "none" }}><AdSidebar dark={dark} /></div>
 
         {/* ══ Main Column ══ */}
         <div style={{ maxWidth: 420, width: "100%", padding: "0 16px 20px" }}>
@@ -526,9 +523,6 @@ export default function Pyeongdani() {
             </div>
           )}
 
-          {/* AD: 상단 배너 */}
-          <AdBanner dark={dark} />
-
           {/* ══════ TAB 1 ══════ */}
           {tab === "calc" && (
             <>
@@ -563,9 +557,6 @@ export default function Pyeongdani() {
                       {calc.addCount > 0 && <span style={{ padding: "4px 10px", borderRadius: 20, fontSize: 12, background: C.gL, color: C.g }}>{"💧".repeat(Math.min(calc.addCount, 5))} {calc.addCount}번</span>}
                     </div>
                   </div>
-
-                  {/* AD: 카드 사이 네이티브 */}
-                  <AdBanner dark={dark} />
 
                   {/* Card 2 */}
                   {tp > 0 && (
@@ -667,9 +658,6 @@ export default function Pyeongdani() {
                       </div>
                     </div>
 
-                    {/* AD: 슬라이더 아래 */}
-                    <AdBanner dark={dark} size="large" />
-
                     <div style={{ display: "flex", gap: 6, overflowX: "auto", paddingBottom: 8, marginBottom: 8 }}>
                       {DREAM_CATS.map(cat => {
                         const ci = dreamCalc.items.filter(i => cat.items.some(c => c.name === i.name));
@@ -737,9 +725,6 @@ export default function Pyeongdani() {
             </>
           )}
 
-          {/* AD: 하단 배너 */}
-          <AdBanner dark={dark} style={{ marginTop: 24 }} />
-
           {/* 콘텐츠 / SEO 섹션 */}
           <div style={{ marginTop: 32, lineHeight: 1.8 }}>
             <h2 style={{ fontSize: 18, fontWeight: 700, color: C.g, marginBottom: 12 }}>물타기·불타기 계산기란?</h2>
@@ -804,7 +789,12 @@ export default function Pyeongdani() {
             <div>국내: 거래세 0.18% · 미국: 양도세 22% (250만 공제)</div>
             {market === "us" && <div>환율: {commafy(exRate)}원/$ {rateLive ? "(실시간)" : "(기본값)"}</div>}
 
-            <div style={{ marginTop: 16, paddingTop: 12, borderTop: `1px solid ${C.bd}`, display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" }}>
+            <div style={{ marginTop: 16, paddingTop: 12, borderTop: `1px solid ${C.bd}`, display: "flex", justifyContent: "center", gap: 14, flexWrap: "wrap" }}>
+              <a href="/guide-multaegi.html" style={{ color: C.t3, textDecoration: "none", fontSize: 11 }}>물타기 가이드</a>
+              <a href="/guide-average.html" style={{ color: C.t3, textDecoration: "none", fontSize: 11 }}>평단가 계산법</a>
+              <a href="/guide-tax.html" style={{ color: C.t3, textDecoration: "none", fontSize: 11 }}>세금 가이드</a>
+            </div>
+            <div style={{ marginTop: 8, display: "flex", justifyContent: "center", gap: 14, flexWrap: "wrap" }}>
               <a href="/about.html" style={{ color: C.t3, textDecoration: "none", fontSize: 11 }}>서비스 소개</a>
               <a href="/privacy.html" style={{ color: C.t3, textDecoration: "none", fontSize: 11 }}>개인정보처리방침</a>
             </div>
@@ -816,19 +806,10 @@ export default function Pyeongdani() {
             <div style={{ marginTop: 8, fontSize: 10, color: dark ? "#333" : "#ddd" }}>© 2025 평단이. All rights reserved.</div>
           </div>
         </div>
-
-        {/* Right Sidebar Ad (PC) */}
-        <div className="sidebar-ad" style={{ display: "none" }}><AdSidebar dark={dark} /></div>
       </div>
-
-      {/* 앵커 광고 (Sticky Bottom) */}
-      <AdAnchor dark={dark} />
 
       {/* Modals */}
       {shareData && <ShareModal data={shareData} dark={dark} onClose={() => setShareData(null)} />}
-
-      {/* PC 사이드바 표시 */}
-      <style>{`@media(min-width:768px){.sidebar-ad{display:flex!important}}`}</style>
     </div>
   );
 }
