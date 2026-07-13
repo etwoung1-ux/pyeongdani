@@ -48,6 +48,51 @@ const DREAM_CATS = [
 ];
 
 const FALLBACK_RATE = 1450;
+
+/* ═══════════════════════════════════════════════
+   🛒 쿠팡 파트너스 광고 설정 (여기만 수정하면 됨!)
+   ═══════════════════════════════════════════════
+   수익률 5구간별로 다른 광고가 자동으로 표시됩니다.
+   - title: 후킹 워딩 (한 줄, 15자 미만 권장)
+   - link: 쿠팡 파트너스 링크
+   - iframeSrc: 쿠팡 파트너스 iframe의 src 주소 (상품 이미지+가격 위젯)
+*/
+const COUPANG_ADS = {
+  zone1: {  // 수익률 -50% 이하 (대폭락)
+    title: "오늘부턴 본전까지 라면만 먹는거야",
+    link: "https://link.coupang.com/a/flUfiVWwii",
+    iframeSrc: "https://coupa.ng/cn2sj6",
+  },
+  zone2: {  // 수익률 -50% ~ -30% (큰 손실)
+    title: "물마셔,,물이 반이나 남았어",
+    link: "https://link.coupang.com/a/flUiyz1BSe",
+    iframeSrc: "https://coupa.ng/cn2sfC",
+  },
+  zone3: {  // 수익률 -30% ~ 0% (손실)
+    title: "배달 음식 좀 줄이면 탈출이야",
+    link: "https://link.coupang.com/a/flUvEJ5w84",
+    iframeSrc: "https://coupa.ng/cn2sri",
+  },
+  zone4: {  // 수익률 0% ~ +60% (수익)
+    title: "이대로 가면 올해도 푸근해",
+    link: "https://link.coupang.com/a/flULVckOaW",
+    iframeSrc: "https://coupa.ng/cn2sGy",
+  },
+  zone5: {  // 수익률 +60% 이상 (대박)
+    title: "성공한 자에게 필요한 안전자산",
+    link: "https://link.coupang.com/a/flUQ9IFE72",
+    iframeSrc: "https://coupa.ng/cn2sLT",
+  },
+};
+
+/* 수익률 → 광고 존 판단 */
+const getAdZone = (profitRate) => {
+  if (profitRate <= -50) return "zone1";
+  if (profitRate <= -30) return "zone2";
+  if (profitRate < 0) return "zone3";
+  if (profitRate < 60) return "zone4";
+  return "zone5";
+};
 const commafy = (n) => (n == null || isNaN(n)) ? "0" : Math.round(n).toLocaleString("ko-KR");
 const shortNum = (n) => {
   if (n === 0) return "0";
@@ -57,10 +102,17 @@ const shortNum = (n) => {
   return s + commafy(a);
 };
 const formatNum = (val) => {
-  const v = val.replace(/[^0-9]/g, "");
+  let v = val.replace(/[^0-9.]/g, "");
+  // 소수점은 하나만 허용
+  const firstDot = v.indexOf(".");
+  if (firstDot !== -1) v = v.slice(0, firstDot + 1) + v.slice(firstDot + 1).replace(/\./g, "");
   if (v === "") return { d: "", r: "" };
-  const i = v.replace(/^0+(?=\d)/, "");
-  return { d: i ? Number(i).toLocaleString("ko-KR") : "0", r: i || "0" };
+  if (v === ".") return { d: "0.", r: "0." };
+  const parts = v.split(".");
+  const intPart = parts[0].replace(/^0+(?=\d)/, "") || "0";
+  const formatted = Number(intPart).toLocaleString("ko-KR");
+  if (parts.length > 1) return { d: formatted + "." + parts[1].slice(0, 2), r: intPart + "." + parts[1].slice(0, 2) };
+  return { d: formatted, r: intPart };
 };
 const useCI = () => {
   const [d, setD] = useState("");
@@ -94,6 +146,88 @@ const AdBanner = ({ dark, size = "normal" }) => (
     <span style={{ fontSize: 11, color: dark ? "#333" : "#ddd" }}>광고 영역{size === "large" ? " (대형)" : ""}</span>
   </div>
 );
+
+/* ═══ 쿠팡 파트너스 네이티브 광고 (수익률 반응형, 5구간) ═══ */
+const CoupangAd = ({ profitRate, dark }) => {
+  const zone = getAdZone(profitRate);
+  const [visible, setVisible] = useState(true);
+  const [currentZone, setCurrentZone] = useState(zone);
+
+  /* 존 변경 시 페이드 전환 */
+  useEffect(() => {
+    if (zone !== currentZone) {
+      setVisible(false);
+      const t = setTimeout(() => { setCurrentZone(zone); setVisible(true); }, 200);
+      return () => clearTimeout(t);
+    }
+  }, [zone, currentZone]);
+
+  const displayAd = COUPANG_ADS[currentZone];
+  const isLossZone = currentZone === "zone1" || currentZone === "zone2" || currentZone === "zone3";
+  const accentColor = isLossZone ? "#E24B4A" : "#0B8A4B";
+  const bgColor = isLossZone
+    ? (dark ? "#2a1515" : "#FDF5F5")
+    : (dark ? "#152a1a" : "#F5FDF7");
+
+  return (
+    <div style={{
+      background: bgColor,
+      border: `1.5px solid ${accentColor}25`,
+      borderRadius: 16,
+      padding: "14px 16px",
+      margin: "12px 0",
+      opacity: visible ? 1 : 0,
+      transform: visible ? "translateY(0)" : "translateY(6px)",
+      transition: "opacity .2s ease, transform .2s ease",
+    }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+        {/* 쿠팡 상품 위젯 (이미지+가격) */}
+        <div style={{ width: 120, height: 240, flexShrink: 0, borderRadius: 12, overflow: "hidden", background: "#fff", border: `1px solid ${dark ? "#333" : "#eee"}` }}>
+          <iframe
+            key={currentZone}
+            src={displayAd.iframeSrc}
+            width="120"
+            height="240"
+            frameBorder="0"
+            scrolling="no"
+            referrerPolicy="unsafe-url"
+            title="쿠팡 상품"
+            style={{ display: "block" }}
+          />
+        </div>
+
+        {/* 워딩 + 버튼 */}
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: dark ? "#eee" : "#2a2a2a", lineHeight: 1.5, wordBreak: "keep-all" }}>
+            {displayAd.title}
+          </div>
+          <a
+            href={displayAd.link}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            style={{
+              display: "inline-block",
+              alignSelf: "flex-start",
+              padding: "10px 18px",
+              background: accentColor,
+              color: "#fff",
+              borderRadius: 10,
+              fontSize: 13,
+              fontWeight: 600,
+              textDecoration: "none",
+            }}
+          >
+            보러가기 →
+          </a>
+        </div>
+      </div>
+
+      <div style={{ fontSize: 9, color: dark ? "#555" : "#bbb", marginTop: 10, textAlign: "right" }}>
+        이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다
+      </div>
+    </div>
+  );
+};
 
 /* 사이드바 (PC 전용) */
 const AdSidebar = ({ dark }) => (
@@ -362,15 +496,31 @@ export default function Pyeongdani() {
   const [rateLive, setRateLive] = useState(false);
   const [dreamCat, setDreamCat] = useState("daily");
   const [dreamSlider, setDreamSlider] = useState(null);
+  const [inputCur, setInputCur] = useState("krw"); // 미국주식 입력 통화: "krw" | "usd"
 
   const ap = useCI(), qt = useCI(), tgt = useCI();
   const [adds, setAdds] = useState([{ pd: "", pr: "", qd: "", qr: "" }]);
   const resultRef = useRef(null);
 
+  /* 환율 자동 업데이트 (1차 API 실패 시 2차 API 폴백) */
   useEffect(() => {
-    fetch("https://open.er-api.com/v6/latest/USD").then(r => r.json())
-      .then(d => { if (d?.rates?.KRW) { setExRate(Math.round(d.rates.KRW)); setRateLive(true); } }).catch(() => { });
+    fetch("https://open.er-api.com/v6/latest/USD")
+      .then(r => r.json())
+      .then(d => {
+        if (d?.rates?.KRW) { setExRate(Math.round(d.rates.KRW)); setRateLive(true); }
+        else throw new Error("no KRW");
+      })
+      .catch(() => {
+        // 폴백: 두 번째 무료 환율 API
+        fetch("https://api.frankfurter.app/latest?from=USD&to=KRW")
+          .then(r => r.json())
+          .then(d => { if (d?.rates?.KRW) { setExRate(Math.round(d.rates.KRW)); setRateLive(true); } })
+          .catch(() => { });
+      });
   }, []);
+
+  /* 입력값 → 원화 변환 (미국주식 + 달러 입력 모드일 때만 환율 적용) */
+  const toKRW = (v) => (market === "us" && inputCur === "usd") ? v * exRate : v;
 
   const addRow = () => setAdds([...adds, { pd: "", pr: "", qd: "", qr: "" }]);
   const removeRow = i => { if (adds.length > 1) setAdds(adds.filter((_, idx) => idx !== i)); };
@@ -382,21 +532,22 @@ export default function Pyeongdani() {
 
   const base = useMemo(() => {
     if (!ap.num || !qt.num) return null;
-    let tCost = ap.num * qt.num, tQty = qt.num, aCnt = 0;
-    adds.forEach(a => { const p = parseFloat(a.pr) || 0, q = parseFloat(a.qr) || 0; if (p > 0 && q > 0) { tCost += p * q; tQty += q; aCnt++; } });
-    return { newAvg: tCost / tQty, totalQty: tQty, totalCost: tCost, addCount: aCnt, avgChange: ((tCost / tQty - ap.num) / ap.num) * 100 };
-  }, [ap.num, qt.num, adds]);
+    const apK = toKRW(ap.num);
+    let tCost = apK * qt.num, tQty = qt.num, aCnt = 0;
+    adds.forEach(a => { const p = toKRW(parseFloat(a.pr) || 0), q = parseFloat(a.qr) || 0; if (p > 0 && q > 0) { tCost += p * q; tQty += q; aCnt++; } });
+    return { newAvg: tCost / tQty, totalQty: tQty, totalCost: tCost, addCount: aCnt, avgChange: ((tCost / tQty - apK) / apK) * 100 };
+  }, [ap.num, qt.num, adds, market, inputCur, exRate]);
 
   const calc = useMemo(() => {
     if (!base) return null;
-    const t = sliderP !== null ? sliderP : tgt.num;
+    const t = sliderP !== null ? sliderP : toKRW(tgt.num);
     const pR = t > 0 ? ((t - base.newAvg) / base.newAvg) * 100 : 0;
     const gP = t > 0 ? (t - base.newAvg) * base.totalQty : 0;
     let tax = 0, tL = "";
     if (market === "kr") { tax = t > 0 ? t * base.totalQty * 0.0018 : 0; tL = "거래세 0.18%"; }
     else { if (gP > 2500000) tax = (gP - 2500000) * 0.22; tL = "양도세 22% (250만 공제)"; }
-    return { ...base, profitRate: pR, grossProfit: gP, tax, taxLabel: tL, netProfit: gP - tax };
-  }, [base, tgt.num, sliderP, market]);
+    return { ...base, targetKRW: t, profitRate: pR, grossProfit: gP, tax, taxLabel: tL, netProfit: gP - tax };
+  }, [base, tgt.num, sliderP, market, inputCur, exRate]);
 
   const dreamCalc = useMemo(() => {
     if (!base) return null;
@@ -434,15 +585,24 @@ export default function Pyeongdani() {
   const iS = { width: "100%", padding: "12px 14px", border: `1.5px solid ${C.bd}`, borderRadius: 12, fontSize: 16, background: C.iBg, color: C.t1, outline: "none", boxSizing: "border-box" };
   const focus = e => e.target.style.borderColor = C.g;
   const blr = e => e.target.style.borderColor = C.bd;
-  const tp = sliderP !== null ? sliderP : tgt.num;
+  const tp = sliderP !== null ? sliderP : toKRW(tgt.num);
+
+  /* 통화 표기 헬퍼 */
+  const isUsdInput = market === "us" && inputCur === "usd";
+  const curLabel = isUsdInput ? "달러" : "원";
+  const curPlaceholder = isUsdInput ? "예: 152.35" : "예: 55,000";
 
   const holdingsBlock = (
     <div style={{ background: C.card, borderRadius: 16, padding: 20, border: `1px solid ${C.bd}`, marginBottom: 12 }}>
       <div style={{ fontSize: 14, fontWeight: 600, color: C.g, marginBottom: 14 }}>📊 현재 보유</div>
       <div style={{ marginBottom: 12 }}>
-        <label style={{ fontSize: 12, color: C.t2, marginBottom: 4, display: "block" }}>평균 매수 단가 (원)</label>
-        <input type="text" inputMode="numeric" placeholder="예: 55,000" value={ap.d} onChange={ap.onChange} style={iS} onFocus={focus} onBlur={blr} />
-        {market === "us" && ap.num > 0 && <div style={{ fontSize: 11, color: C.t3, marginTop: 4, paddingLeft: 4 }}>≈ ${(ap.num / exRate).toFixed(2)}</div>}
+        <label style={{ fontSize: 12, color: C.t2, marginBottom: 4, display: "block" }}>평균 매수 단가 ({curLabel})</label>
+        <input type="text" inputMode="decimal" placeholder={curPlaceholder} value={ap.d} onChange={ap.onChange} style={iS} onFocus={focus} onBlur={blr} />
+        {market === "us" && ap.num > 0 && (
+          <div style={{ fontSize: 11, color: C.t3, marginTop: 4, paddingLeft: 4 }}>
+            {isUsdInput ? `≈ ${commafy(ap.num * exRate)}원` : `≈ $${(ap.num / exRate).toFixed(2)}`}
+          </div>
+        )}
       </div>
       <div>
         <label style={{ fontSize: 12, color: C.t2, marginBottom: 4, display: "block" }}>보유 수량 (주)</label>
@@ -466,8 +626,13 @@ export default function Pyeongdani() {
           )}
           <div style={{ display: "flex", gap: 8 }}>
             <div style={{ flex: 1 }}>
-              <label style={{ fontSize: 11, color: C.t3, marginBottom: 2, display: "block" }}>매수 단가</label>
-              <input type="text" inputMode="numeric" placeholder="단가" value={a.pd} onChange={e => updateAdd(i, "price", e.target.value)} style={{ ...iS, padding: "10px 12px", fontSize: 15 }} onFocus={focus} onBlur={blr} />
+              <label style={{ fontSize: 11, color: C.t3, marginBottom: 2, display: "block" }}>매수 단가 ({curLabel})</label>
+              <input type="text" inputMode="decimal" placeholder="단가" value={a.pd} onChange={e => updateAdd(i, "price", e.target.value)} style={{ ...iS, padding: "10px 12px", fontSize: 15 }} onFocus={focus} onBlur={blr} />
+              {market === "us" && parseFloat(a.pr) > 0 && (
+                <div style={{ fontSize: 10, color: C.t3, marginTop: 2, paddingLeft: 2 }}>
+                  {isUsdInput ? `≈ ${commafy(parseFloat(a.pr) * exRate)}원` : `≈ $${(parseFloat(a.pr) / exRate).toFixed(2)}`}
+                </div>
+              )}
             </div>
             <div style={{ flex: 1 }}>
               <label style={{ fontSize: 11, color: C.t3, marginBottom: 2, display: "block" }}>수량</label>
@@ -517,9 +682,26 @@ export default function Pyeongdani() {
             ))}
           </div>
           {market === "us" && (
-            <div style={{ background: dark ? "#1a1f2a" : "#EEF2FF", borderRadius: 10, padding: "10px 14px", marginBottom: 14, display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 13 }}>
-              <span style={{ color: dark ? "#8899bb" : "#5566aa" }}>💱 USD/KRW</span>
-              <span style={{ fontWeight: 600, color: dark ? "#aabbdd" : "#3344aa" }}>$1 = {commafy(exRate)}원 <span style={{ fontSize: 10, fontWeight: 400, color: C.t3, marginLeft: 4 }}>{rateLive ? "실시간" : "기본값"}</span></span>
+            <div style={{ background: dark ? "#1a1f2a" : "#EEF2FF", borderRadius: 10, padding: "10px 14px", marginBottom: 14, fontSize: 13 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ color: dark ? "#8899bb" : "#5566aa" }}>💱 USD/KRW</span>
+                <span style={{ fontWeight: 600, color: dark ? "#aabbdd" : "#3344aa" }}>$1 = {commafy(exRate)}원 <span style={{ fontSize: 10, fontWeight: 400, color: C.t3, marginLeft: 4 }}>{rateLive ? "실시간" : "기본값"}</span></span>
+              </div>
+              {/* 입력 통화 선택 */}
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 10, paddingTop: 10, borderTop: `1px solid ${dark ? "#2a3040" : "#dde3f5"}` }}>
+                <span style={{ fontSize: 12, color: dark ? "#8899bb" : "#5566aa" }}>가격 입력 통화</span>
+                <div style={{ display: "flex", background: dark ? "#252b3a" : "#fff", borderRadius: 8, padding: 3, marginLeft: "auto" }}>
+                  {[["krw", "₩ 원화"], ["usd", "$ 달러"]].map(([k, l]) => (
+                    <button key={k} onClick={() => setInputCur(k)} style={{
+                      padding: "5px 12px", border: "none", borderRadius: 6, fontSize: 12, cursor: "pointer",
+                      fontWeight: inputCur === k ? 700 : 400,
+                      background: inputCur === k ? (dark ? "#3344aa" : "#3344aa") : "transparent",
+                      color: inputCur === k ? "#fff" : (dark ? "#8899bb" : "#8899bb"),
+                      transition: "all .15s",
+                    }}>{l}</button>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
 
@@ -530,8 +712,12 @@ export default function Pyeongdani() {
               {addsBlock}
               <div style={{ background: C.card, borderRadius: 16, padding: 20, border: `1px solid ${C.bd}`, marginBottom: 12 }}>
                 <div style={{ fontSize: 14, fontWeight: 600, color: C.g, marginBottom: 14 }}>🎯 목표 주가</div>
-                <input type="text" inputMode="numeric" placeholder="이 가격 되면 팔 거야! (원)" value={tgt.d} onChange={e => { tgt.onChange(e); setSliderP(null); }} style={iS} onFocus={focus} onBlur={blr} />
-                {market === "us" && tgt.num > 0 && <div style={{ fontSize: 11, color: C.t3, marginTop: 4, paddingLeft: 4 }}>≈ ${(tgt.num / exRate).toFixed(2)}</div>}
+                <input type="text" inputMode="decimal" placeholder={isUsdInput ? "이 가격 되면 팔 거야! ($)" : "이 가격 되면 팔 거야! (원)"} value={tgt.d} onChange={e => { tgt.onChange(e); setSliderP(null); }} style={iS} onFocus={focus} onBlur={blr} />
+                {market === "us" && tgt.num > 0 && (
+                  <div style={{ fontSize: 11, color: C.t3, marginTop: 4, paddingLeft: 4 }}>
+                    {isUsdInput ? `≈ ${commafy(tgt.num * exRate)}원` : `≈ $${(tgt.num / exRate).toFixed(2)}`}
+                  </div>
+                )}
               </div>
               <button onClick={handleCalc} style={{ width: "100%", padding: 16, background: C.g, color: "#fff", border: "none", borderRadius: 14, fontSize: 17, fontWeight: 600, cursor: "pointer" }}>계산하기 🕯️</button>
               <button onClick={handleReset} style={{ width: "100%", marginTop: 8, padding: 12, background: "transparent", border: `1px solid ${C.bd}`, borderRadius: 12, color: C.t2, fontSize: 14, cursor: "pointer" }}>초기화</button>
@@ -601,6 +787,9 @@ export default function Pyeongdani() {
                           <div><div style={{ fontSize: 11, color: C.t3 }}>세후</div><div style={{ fontSize: 18, fontWeight: 700, color: sN >= 0 ? C.g : C.r }}>{shortNum(sN)}원</div></div>
                           <div><div style={{ fontSize: 11, color: C.t3 }}>{FOOD_ITEMS[selItem].emoji}</div><div style={{ fontSize: 18, fontWeight: 700, color: sN >= 0 ? C.g : C.r }}>{Math.floor(Math.abs(sN) / FOOD_ITEMS[selItem].price).toLocaleString()}{FOOD_ITEMS[selItem].unit}</div></div>
                         </div>
+
+                        {/* 🛒 쿠팡 파트너스 — 수익률 따라 실시간 스위칭 */}
+                        <CoupangAd profitRate={sR} dark={dark} />
                       </>);
                     })()}
                   </div>
@@ -657,6 +846,9 @@ export default function Pyeongdani() {
                         </div>
                       </div>
                     </div>
+
+                    {/* 🛒 쿠팡 파트너스 — 꿈 계산기 수익률 따라 스위칭 */}
+                    <CoupangAd profitRate={dreamCalc.profitRate} dark={dark} />
 
                     <div style={{ display: "flex", gap: 6, overflowX: "auto", paddingBottom: 8, marginBottom: 8 }}>
                       {DREAM_CATS.map(cat => {
