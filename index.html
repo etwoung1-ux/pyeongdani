@@ -1,23 +1,103 @@
 <!doctype html>
 <html lang="ko">
   <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7166793346683258"
-     crossorigin="anonymous"></script>
-    <meta name="naver-site-verification" content="7e10aa1477b68ebe1d0e43084a7caa67045045ba" />
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>평단이 — 물타기 불타기 계산기</title>
-    <meta name="description" content="주식 물타기 불타기 평단가 계산. 세후 수익, 치킨 환산, 꿈 계산기. 국내주식 미국주식 지원." />
-    <meta name="keywords" content="물타기 계산기, 불타기 계산기, 평단가 계산기, 주식 계산기, 평단이" />
-    <meta property="og:title" content="평단이 — 물타기 불타기 계산기" />
-    <meta property="og:description" content="내 주식 수익으로 치킨 몇 마리? 세후까지 한번에" />
+
+    <!-- ═══ 핵심 SEO (불타기 키워드 강화) ═══ -->
+    <title>물타기 불타기 계산기 — 평단가·세후 수익 무료 계산 | 평단이</title>
+    <meta name="description" content="주식 불타기·물타기 평단가 계산기. 목표가 도달 시 세전·세후 수익, 치킨 환산까지 3초 만에. 국내주식·미국주식(달러 입력) 지원 100% 무료." />
+    <meta name="keywords" content="불타기 계산기, 물타기 계산기, 주식 불타기 평단가, 평단가 계산기, 물타기 불타기, 주식 세후 수익 계산, 미국주식 양도세 계산" />
+    <link rel="canonical" href="https://pyeongdani.com/" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- ═══ Open Graph (카톡/SNS 공유 미리보기) ═══ -->
+    <meta property="og:title" content="물타기 불타기 계산기 — 평단이" />
+    <meta property="og:description" content="내 주식 물타고 불타면 평단가 얼마? 세후 수익은 치킨 몇 마리? 3초 만에 계산" />
     <meta property="og:url" content="https://pyeongdani.com" />
     <meta property="og:type" content="website" />
-    <link rel="canonical" href="https://pyeongdani.com" />
+    <meta property="og:locale" content="ko_KR" />
+
+    <!-- ═══ 구조화 데이터: 웹앱 정보 (구글이 '도구'로 인식) ═══ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "평단이 — 물타기 불타기 계산기",
+      "url": "https://pyeongdani.com",
+      "description": "주식 물타기·불타기 시 평균 매수 단가와 세전·세후 수익을 계산하는 무료 웹 도구",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "KRW"
+      },
+      "inLanguage": "ko"
+    }
+    </script>
+
+    <!-- ═══ 구조화 데이터: FAQ (검색결과에 질문답변 펼침 노출) ═══ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "불타기란 무엇인가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "불타기는 보유 주식의 주가가 평단가보다 올랐을 때 추가 매수하는 전략입니다. 상승 추세에 올라타되 평균 매수 단가는 높아집니다. 평단이에서 불타기 후 평단가와 목표가 도달 시 수익을 바로 계산할 수 있습니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "물타기란 무엇인가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "물타기는 보유 주식의 주가가 평단가보다 떨어졌을 때 추가 매수해 평균 매수 단가를 낮추는 전략입니다. 평단가가 낮아지면 주가가 조금만 반등해도 손익분기점에 도달할 수 있습니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "평단가는 어떻게 계산하나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "평단가는 총 매수 금액을 총 보유 수량으로 나눠 계산합니다. 예를 들어 5만원에 100주, 4만원에 100주를 매수했다면 900만원 ÷ 200주 = 평단가 4만 5천원입니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "미국주식 세금은 어떻게 계산되나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "미국주식은 연간 매매 차익에서 250만원을 공제한 후 22%의 양도소득세가 부과됩니다. 평단이는 미국주식 선택 시 이를 자동으로 반영해 세후 실수익을 계산합니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "평단이는 무료인가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "네, 평단이의 모든 계산 기능은 100% 무료입니다. 입력한 정보는 서버에 저장되지 않고 브라우저에서만 처리됩니다."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- 네이버 소유권 인증 메타태그가 있다면 이 아래에 유지하세요 -->
+    <!-- 애드센스 스크립트가 있다면 이 아래에 유지하세요 -->
+  
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7166793346683258"
+     crossorigin="anonymous"></script>
+    <meta name="naver-site-verification" content="7e10aa1477b68ebe1d0e43084a7caa67045045ba" />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
+

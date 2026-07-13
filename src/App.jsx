@@ -982,6 +982,7 @@ export default function Pyeongdani() {
             {market === "us" && <div>환율: {commafy(exRate)}원/$ {rateLive ? "(실시간)" : "(기본값)"}</div>}
 
             <div style={{ marginTop: 16, paddingTop: 12, borderTop: `1px solid ${C.bd}`, display: "flex", justifyContent: "center", gap: 14, flexWrap: "wrap" }}>
+              <a href="/guide-bultagi.html" style={{ color: C.t3, textDecoration: "none", fontSize: 11 }}>불타기 가이드</a>
               <a href="/guide-multaegi.html" style={{ color: C.t3, textDecoration: "none", fontSize: 11 }}>물타기 가이드</a>
               <a href="/guide-average.html" style={{ color: C.t3, textDecoration: "none", fontSize: 11 }}>평단가 계산법</a>
               <a href="/guide-tax.html" style={{ color: C.t3, textDecoration: "none", fontSize: 11 }}>세금 가이드</a>
